@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - LEGASUS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="product.css">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .verification-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0;
+            background-color: #fff;
+        }
+        
+        .verification-header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .verification-header h2 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        .verification-status {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .status-verified {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+        
+        .orders-list {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .orders-list h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .order-item {
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .order-item:hover {
+            border-color: #000;
+        }
+        
+        .order-item.selected {
+            border-color: #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .order-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        
+        .order-id {
+            font-weight: 600;
+        }
+        
+        .order-date {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .order-content {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .order-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .order-details h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .order-details p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .action-buttons {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .btn-next {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-next:hover {
+            background-color: #333;
+        }
+        
+        .btn-next:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .product-details {
+            display: none;
+            padding: 30px;
+        }
+        
+        .product-details.active {
+            display: block;
+        }
+        
+        .product-header {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        
+        .product-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            margin-right: 30px;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-info h3 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 24px;
+            margin: 0 0 10px 0;
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .product-meta {
+            margin-bottom: 20px;
+        }
+        
+        .meta-item {
+            margin-bottom: 10px;
+            display: flex;
+        }
+        
+        .meta-label {
+            width: 120px;
+            font-weight: 600;
+        }
+        
+        .authenticity-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .authenticity-section h4 {
+            margin-top: 0;
+            color: #2ecc71;
+        }
+        
+        .rfid-info {
+            margin-top: 30px;
+        }
+        
+        .back-to-orders {
+            color: #3498db;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .back-to-orders i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <a href="index.html" class="brand-link">LEGASUS <span class="thin"></span></a>
+            </div>
+            <nav class="top-links">
+                <a href="index.html" class="nav-item">HOME</a>
+                <a href="index.html#about" class="nav-item">ABOUT</a>
+                <a href="#" class="nav-item highlight">NEW LATEST COLLECTION</a>
+                <a href="#" class="nav-item">OUR FASHION WORLD</a>
+            </nav>
+            <div class="icons">
+                <button class="icon-btn" id="cartBtn"><i class="fa-solid fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></button>
+                <button class="icon-btn" id="loginBtn"><i class="fa-regular fa-circle-user"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="verification-container">
+            <div class="verification-header">
+                <h2>Order Details</h2>
+                <span class="verification-status status-verified" id="orderStatus">Verified</span>
+            </div>
+            
+            <div id="ordersSection">
+                <div class="orders-list">
+                    <h3>Your Recent Orders</h3>
+                    <div id="ordersList">
+                        <!-- Orders will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="nextBtn" class="btn-next" disabled>Next</button>
+                </div>
+            </div>
+            
+            <div id="productDetailsSection" class="product-details">
+                <a href="#" class="back-to-orders" id="backToOrders"><i class="fas fa-arrow-left"></i> Back to Orders</a>
+                
+                <div class="product-header">
+                    <img src="" alt="Product Image" class="product-image" id="productImage">
+                    <div class="product-info">
+                        <h3 id="productName">Product Name</h3>
+                        <div class="product-price" id="productPrice">₹0.00</div>
+                        
+                        <div class="product-meta">
+                            <div class="meta-item">
+                                <div class="meta-label">Order ID:</div>
+                                <div class="meta-value" id="detailOrderId"></div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Order Date:</div>
+                                <div class="meta-value" id="orderDate"></div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Size:</div>
+                                <div class="meta-value" id="productSize"></div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Quantity:</div>
+                                <div class="meta-value" id="productQuantity"></div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Total:</div>
+                                <div class="meta-value" id="orderTotal">₹0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="authenticity-section">
+                    <h4><i class="fas fa-check-circle"></i> Product Authenticity Verified</h4>
+                    <p>This product has been verified as an authentic LEGASUS product. The RFID tag embedded in this product confirms its authenticity.</p>
+                </div>
+                
+                <div class="rfid-info">
+                    <h4>About RFID Tag</h4>
+                    <p>Each LEGASUS product comes with a unique RFID tag that ensures its authenticity. This tag contains a unique identifier that is registered in our database when the product is manufactured.</p>
+                    <p>The RFID tag is embedded in the product and cannot be removed or tampered with without damaging the product. This ensures that the product you receive is genuine and has not been counterfeited.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LEGASUS</h3>
+                    <p>Premium clothing for the modern individual.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#allProductsSection">Products</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: Legasus@store.com</p>
+                    <p>Phone: +91 9999</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 LEGASUS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="product-details.js"></script>
+</body>
+</html>

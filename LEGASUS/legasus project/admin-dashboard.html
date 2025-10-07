@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard — LEGASUS</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root { --bg:#111; --panel:#171717; --soft:#222; --accent:#f7931e; --border:#333; --text:#fff; --muted:#bbb; --success:#28a745; --warning:#ffc107; --danger:#dc3545; }
+    *{box-sizing:border-box} html,body{margin:0;height:100%}
+    body{font-family:'Urbanist',system-ui,arial;background:var(--bg);color:var(--text);display:flex}
+    /* Sidebar */
+    .sidebar{width:260px;background:#1a1a1a;height:100vh;position:fixed;inset:0 auto 0 0;padding:22px 18px;border-right:1px solid var(--border)}
+    .brand{font-weight:800;letter-spacing:.5px;color:var(--accent);text-align:center;margin-bottom:18px}
+    .nav{list-style:none;padding:0;margin:22px 0}
+    .nav a{display:flex;gap:10px;align-items:center;color:#ddd;text-decoration:none;padding:10px 12px;border-radius:10px}
+    .nav a:hover{background:#222;color:var(--accent)}
+    /* Main */
+    .main{margin-left:260px;min-height:100vh;flex:1;background:var(--panel);padding:22px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .topbar h1{font-size:22px;color:var(--accent);margin:0}
+    .btn{background:var(--accent);border:none;color:#111;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#2b2b2b;color:#fff;border:1px solid var(--border)}
+    .grid{display:grid;gap:16px}
+    .grid.cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:20px}
+    .card{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h3{margin:0 0 6px;color:var(--muted);font-weight:600}
+    .card .val{font-size:26px;font-weight:800}
+    .section{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:18px}
+    .section h2{margin:0 0 14px;color:var(--accent);font-size:18px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left}
+    th{color:var(--muted);font-weight:700}
+    .actions{display:flex;gap:8px}
+    .danger{background:#ff4d4d;color:#111}
+    .badge{background:#2b2b2b;border:1px solid var(--border);padding:4px 8px;border-radius:999px;color:#ddd;font-size:12px}
+    .badge.success{background:var(--success);color:#111;border-color:var(--success)}
+    .badge.danger{background:var(--danger);color:#fff;border-color:var(--danger)}
+    .btn.success{background:var(--success);color:#111;border:none}
+    .btn.warning{background:var(--warning);color:#111;border:none}
+    tr.out-of-stock{background-color:rgba(220,53,69,0.1)}
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:40}
+    .modal{width:100%;max-width:520px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px}
+    .modal h2{color:var(--accent);margin:0 0 16px;font-size:20px}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .modal-header .close{cursor:pointer;font-size:20px;color:var(--muted)}
+    .modal-header .close:hover{color:var(--text)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:5px}
+    input,select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#1a1a1a;color:#fff;margin-bottom:12px}
+    textarea{min-height:80px;resize:vertical}
+    .form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+    .chart-wrap{max-width:900px;margin:auto}
+    /* Hide all admin sections by default */
+    .admin-section{display:none}
+    /* Show dashboard section by default */
+    #dashboard-section{display:block}
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">LEGASUS Admin</div>
+    <nav>
+      <ul class="nav">
+        <li><a href="#" onclick="showSection('dashboard-section'); return false;"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
+        <li><a href="#" onclick="showSection('products-section'); return false;"><i class="fa-solid fa-shirt"></i><span>Products</span></a></li>
+        <li><a href="#" onclick="showSection('orders-section'); return false;"><i class="fa-solid fa-box"></i><span>Orders</span></a></li>
+        <li><a href="#" onclick="showSection('returns-section'); return false;"><i class="fa-solid fa-undo"></i><span>Returns</span></a></li>
+        <li><a href="#" onclick="showSection('exchanges-section'); return false;"><i class="fa-solid fa-exchange-alt"></i><span>Exchanges</span></a></li>
+        <li><a href="#" onclick="showSection('users-section'); return false;"><i class="fa-solid fa-users"></i><span>Users</span></a></li>
+        <li><a href="#" onclick="showSection('settings-section'); return false;"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+        <li><a href="#" onclick="showSection('profile-section'); return false;"><i class="fa-solid fa-user"></i><span>Profile</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <div style="display:flex;gap:8px">
+        <button class="btn secondary" onclick="location.href='index.html'"><i class="fa-solid fa-house"></i>&nbsp;Home</button>
+        <button class="btn" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;Logout</button>
+      </div>
+      
+      
+        // Check if user is admin, if not redirect to home page
+      //   (function checkAdminAccess() {
+      //     const isAdmin = localStorage.getItem('isAdmin') === 'true';
+          
+      //     if (!isAdmin) {
+      //       alert('Access denied. Admin login required.');
+      //       window.location.href = 'index.html';
+      //     }
+      //   })();
+      //
+      <script>
+  // Check if user is admin, if not redirect to home page
+  (function checkAdminAccess() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    
+    if (!currentUser || currentUser.role !== 'admin') {
+      alert('Access denied. Admin login required.');
+      window.location.href = 'index.html';
+    }
+  })();
+</script>
+
+      
+      <script>
+        function logoutAdmin() {
+          localStorage.removeItem("currentUser");
+          localStorage.setItem("isUserLoggedIn", "false");
+          localStorage.removeItem("isAdmin");
+          // Redirect to home page after clearing all admin-related data
+          window.location.replace("index.html");
+        }
+        
+        // Function to show/hide sections
+        function showSection(sectionId) {
+          // Hide all sections first
+          const allSections = document.querySelectorAll('.admin-section');
+          allSections.forEach(section => {
+            section.style.display = 'none';
+          });
+          
+          // Show the selected section
+          const selectedSection = document.getElementById(sectionId);
+          if (selectedSection) {
+            selectedSection.style.display = 'block';
+          }
+          
+          // Update the topbar title
+          const sectionTitle = sectionId.replace('-section', '').split('-').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1)
+          ).join(' ');
+          document.querySelector('.topbar h1').textContent = sectionTitle;
+          
+          // Update active class in sidebar navigation
+          const navLinks = document.querySelectorAll('.sidebar nav ul li a');
+          navLinks.forEach(link => {
+            link.parentElement.classList.remove('active');
+            if (link.getAttribute('onclick').includes(sectionId)) {
+              link.parentElement.classList.add('active');
+            }
+          });
+        }
+        
+        // Initialize - show dashboard by default
+        document.addEventListener('DOMContentLoaded', function() {
+          showSection('dashboard-section');
+        });
+      </script>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard-section" class="admin-section">
+      <!-- KPI Cards -->
+      <div class="grid cards">
+        <div class="card"><h3>Total Products</h3><div class="val" id="kpiProducts">0</div></div>
+        <div class="card"><h3>Total Orders</h3><div class="val" id="kpiOrders">0</div></div>
+        <div class="card"><h3>Total Users</h3><div class="val"><span id="kpiUsers">—</span> <span class="badge">demo</span></div></div>
+        <div class="card"><h3>Total Earnings</h3><div class="val">₹<span id="kpiEarnings">0</span></div></div>
+      </div>
+
+      <!-- Earnings Chart -->
+      <section class="section">
+        <h2>Earnings Overview</h2>
+        <div class="chart-wrap"><canvas id="earningsChart" height="120"></canvas></div>
+      </section>
+    </div>
+    
+    <!-- Products Section -->
+    <div id="products-section" class="admin-section">
+      <section class="section">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h2>Manage Products</h2>
+          <button class="btn" id="openAddProduct"><i class="fa-solid fa-plus"></i>&nbsp;Add Product</button>
+        </div>
+        <table id="productsTable">
+          <thead>
+            <tr><th>ID</th><th>Name</th><th>Price</th><th>Category</th><th>Fabric</th><th>Size</th><th>Stock Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </div>
+    
+    <!-- Orders Section -->
+    <div id="orders-section" class="admin-section">
+      <section class="section">
+        <h2>Manage Orders</h2>
+        <table id="ordersTable">
+          <thead>
+            <tr><th>Order ID</th><th>User</th><th>Total (₹)</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </div>
+    
+    <!-- Returns Section -->
+    <div id="returns-section" class="admin-section">
+      <section class="section">
+        <h2>Manage Returns</h2>
+        <table id="returnsTable">
+          <thead>
+            <tr><th>Return ID</th><th>Order ID</th><th>User</th><th>Items</th><th>Reason</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="8" style="text-align:center;padding:20px;">No returns data available</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    
+    <!-- Exchanges Section -->
+    <div id="exchanges-section" class="admin-section">
+      <section class="section">
+        <h2>Manage Exchanges</h2>
+        <table id="exchangesTable">
+          <thead>
+            <tr><th>Exchange ID</th><th>Order ID</th><th>User</th><th>Original Item</th><th>New Item</th><th>Reason</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="9" style="text-align:center;padding:20px;">No exchanges data available</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    
+    <!-- Users Section -->
+    <div id="users-section" class="admin-section">
+      <section class="section">
+        <h2>Manage Users</h2>
+        <table id="usersTable">
+          <thead>
+            <tr><th>ID</th><th>Email</th><th>Role</th><th>Joined</th><th>Orders</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="6" style="text-align:center;padding:20px;">No users data available</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    
+    <!-- Settings Section -->
+    <div id="settings-section" class="admin-section">
+      <section class="section">
+        <h2>System Settings</h2>
+        <div style="padding:15px;">
+          <div class="row">
+            <div>
+              <label>Store Name</label>
+              <input type="text" value="LEGASUS" id="settingStoreName">
+            </div>
+            <div>
+              <label>Currency</label>
+              <select id="settingCurrency">
+                <option value="INR" selected>Indian Rupee (₹)</option>
+                <option value="USD">US Dollar ($)</option>
+                <option value="EUR">Euro (€)</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <button class="btn" id="saveSettings">Save Settings</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Profile Section -->
+    <div id="profile-section" class="admin-section">
+      <section class="section">
+        <h2>Admin Profile</h2>
+        <div style="padding:15px;">
+          <div class="row">
+            <div>
+              <label>Email</label>
+              <input type="email" value="admin@example.com" readonly>
+            </div>
+            <div>
+              <label>Role</label>
+              <input type="text" value="Administrator" readonly>
+            </div>
+          </div>
+          <div class="row" style="margin-top:15px;">
+            <div>
+              <label>Current Password</label>
+              <input type="password" placeholder="Enter current password">
+            </div>
+            <div>
+              <label>New Password</label>
+              <input type="password" placeholder="Enter new password">
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <button class="btn" id="updatePassword">Update Password</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Add Product Modal -->
+  <div class="modal-backdrop" id="addProductModal">
+    <div class="modal">
+      <h2 style="margin:0 0 12px;color:var(--accent)">Add Product</h2>
+      <div class="row">
+        <div>
+          <label>Name</label>
+          <input id="pName" placeholder="e.g. Velocity Racing Tee">
+        </div>
+        <div>
+          <label>Price (₹)</label>
+          <input id="pPrice" type="number" step="0.01" placeholder="79.99">
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Category</label>
+          <select id="pCategory">
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="unisex">Unisex</option>
+          </select>
+        </div>
+        <div>
+          <label>Primary Image URL</label>
+          <input id="pImage" placeholder="https://...">
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <label>Description</label>
+        <textarea id="pDesc" rows="3" placeholder="Short description"></textarea>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Sizes (comma separated)</label>
+          <input id="pSizes" placeholder="XS,S,M,L,XL" value="XS,S,M,L,XL">
+        </div>
+        <div>
+          <label>Care Info</label>
+          <input id="pCare" placeholder="Machine wash cold">
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Fabric</label>
+          <input id="pFabric" placeholder="e.g. Cotton, Polyester, Linen">
+        </div>
+        <div>
+          <label>Color</label>
+          <input id="pColor" placeholder="e.g. Black, White, Blue">
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Stock Status</label>
+          <select id="pStockStatus">
+            <option value="in_stock">In Stock</option>
+            <option value="out_of_stock">Out of Stock</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+        <button class="btn secondary" id="closeAddProduct">Cancel</button>
+        <button class="btn" id="saveProduct">Save</button>
+      </div>
+    </div>
+  </div>
+
+ <script>
+  // ---------- Storage Helpers ----------
+  const LS_PRODUCTS_KEY = "allProducts";
+  const LS_ORDERS_KEY = "orders";
+
+  const money = n => (Number(n||0)).toLocaleString("en-IN", {maximumFractionDigits:2});
+
+  function readProducts(){
+    const raw = localStorage.getItem(LS_PRODUCTS_KEY);
+    if(raw){ try { return JSON.parse(raw) || []; } catch(e){ return []; } }
+    localStorage.setItem(LS_PRODUCTS_KEY, JSON.stringify([]));
+    return [];
+  }
+  function writeProducts(list){ localStorage.setItem(LS_PRODUCTS_KEY, JSON.stringify(list)); }
+
+  function readOrders(){
+    const raw = localStorage.getItem(LS_ORDERS_KEY);
+    if(!raw){ localStorage.setItem(LS_ORDERS_KEY, JSON.stringify([])); return []; }
+    try { return JSON.parse(raw) || []; } catch(e){ return []; }
+  }
+  function writeOrders(list){ localStorage.setItem(LS_ORDERS_KEY, JSON.stringify(list)); }
+  
+  // ---------- Modal Handlers ----------
+  // Add Product Modal
+  const addProductModal = document.getElementById("addProductModal");
+  const openAddProductBtn = document.getElementById("openAddProduct");
+  const closeAddProductBtn = document.getElementById("closeAddProduct");
+  const saveProductBtn = document.getElementById("saveProduct");
+  
+  // Open Add Product Modal
+  openAddProductBtn.addEventListener("click", () => {
+    // Clear form fields
+    document.getElementById("pName").value = "";
+    document.getElementById("pPrice").value = "";
+    document.getElementById("pCategory").value = "men";
+    document.getElementById("pImage").value = "";
+    document.getElementById("pDesc").value = "";
+    document.getElementById("pSizes").value = "XS,S,M,L,XL";
+    document.getElementById("pCare").value = "";
+    document.getElementById("pFabric").value = "";
+    document.getElementById("pColor").value = "";
+    
+    // Show modal
+    addProductModal.style.display = "flex";
+  });
+  
+  // Close Add Product Modal
+  closeAddProductBtn.addEventListener("click", () => {
+    addProductModal.style.display = "none";
+  });
+  
+  // Save Product
+  saveProductBtn.addEventListener("click", () => {
+    // Get form values
+    const name = document.getElementById("pName").value.trim();
+    const price = parseFloat(document.getElementById("pPrice").value);
+    const category = document.getElementById("pCategory").value;
+    const image = document.getElementById("pImage").value.trim();
+    const description = document.getElementById("pDesc").value.trim();
+    const sizes = document.getElementById("pSizes").value.trim();
+    const care = document.getElementById("pCare").value.trim();
+    const fabric = document.getElementById("pFabric").value.trim();
+    const color = document.getElementById("pColor").value.trim();
+    const stockStatus = document.getElementById("pStockStatus").value;
+    
+    // Validate form
+    if (!name || isNaN(price) || price <= 0) {
+      alert("Please enter a valid product name and price");
+      return;
+    }
+    
+    // Create product object
+    const products = readProducts();
+    const newProduct = {
+      id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+      name,
+      price,
+      category,
+      image: image || "https://via.placeholder.com/300x400?text=Product+Image",
+      description,
+      sizes: sizes.split(",").map(s => s.trim()),
+      care,
+      fabric,
+      color,
+      stockStatus,
+      createdAt: new Date().toISOString()
+    };
+    
+    // Add to products array
+    products.push(newProduct);
+    writeProducts(products);
+    
+    // Close modal and refresh products table
+    addProductModal.style.display = "none";
+    renderProducts();
+  });
+  
+  // Close modal when clicking outside
+  window.addEventListener("click", (e) => {
+    if (e.target === addProductModal) {
+      addProductModal.style.display = "none";
+    }
+  });
+
+  // ---------- UI Render ----------
+  const els = {
+    kpiProducts: document.getElementById("kpiProducts"),
+    kpiOrders: document.getElementById("kpiOrders"),
+    kpiEarnings: document.getElementById("kpiEarnings"),
+    kpiUsers: document.getElementById("kpiUsers"),   // ✅ Users card
+    productsTbody: document.querySelector("#productsTable tbody"),
+    ordersTbody: document.querySelector("#ordersTable tbody"),
+  };
+
+  let chartRef = null;
+
+  function renderUsers() {
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    els.kpiUsers.textContent = users.length;
+  }
+
+  function renderProducts(){
+    const products = readProducts();
+    els.kpiProducts.textContent = products.length;
+    els.productsTbody.innerHTML = "";
+    products.forEach(p=>{
+      const tr = document.createElement("tr");
+      const stockStatus = p.stockStatus || "in_stock";
+      const stockDisplay = stockStatus === "out_of_stock" ? 
+        `<span class="badge danger">Out of Stock</span>` : 
+        `<span class="badge success">In Stock</span>`;
+      
+      if (stockStatus === "out_of_stock") {
+        tr.classList.add("out-of-stock");
+      }
+      
+      tr.innerHTML = `
+        <td>${p.id}</td>
+        <td>${p.name}</td>
+        <td>₹${money(p.price)}</td>
+        <td>${(p.category||'').toString().toUpperCase()}</td>
+        <td>${p.fabric || 'N/A'}</td>
+        <td>${p.sizes ? p.sizes.join(', ') : 'N/A'}</td>
+        <td>${stockDisplay}</td>
+        <td class="actions">
+          <button class="btn secondary" data-edit="${p.id}">Edit</button>
+          <button class="btn danger" data-del="${p.id}">Delete</button>
+          <button class="btn ${stockStatus === "out_of_stock" ? "success" : "warning"}" data-toggle-stock="${p.id}">
+            ${stockStatus === "out_of_stock" ? "Mark In Stock" : "Mark Out of Stock"}
+          </button>
+        </td>`;
+      els.productsTbody.appendChild(tr);
+    });
+
+    // Delete handler
+    els.productsTbody.querySelectorAll("[data-del]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = Number(btn.dataset.del);
+        const list = readProducts().filter(x=>x.id!==id);
+        writeProducts(list);
+        renderProducts();
+      });
+    });
+    
+    // Edit handler
+    els.productsTbody.querySelectorAll("[data-edit]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = Number(btn.dataset.edit);
+        editProduct(id);
+      });
+    });
+    
+    // Toggle stock status handler
+    els.productsTbody.querySelectorAll("[data-toggle-stock]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = Number(btn.dataset.toggleStock);
+        const products = readProducts();
+        const product = products.find(p => p.id === id);
+        if(!product) return;
+        
+        // Toggle stock status
+        product.stockStatus = product.stockStatus === "out_of_stock" ? "in_stock" : "out_of_stock";
+        product.updatedAt = new Date().toISOString();
+        
+        // Save products
+        writeProducts(products);
+        
+        // Refresh products table
+        renderProducts();
+      });
+    });
+  }
+  
+  // Edit Product
+  function editProduct(id){
+    const products = readProducts();
+    const product = products.find(p => p.id === id);
+    if(!product) return;
+    
+    // Populate form
+    document.getElementById("pName").value = product.name;
+    document.getElementById("pPrice").value = product.price;
+    document.getElementById("pCategory").value = product.category;
+    document.getElementById("pImage").value = product.image;
+    document.getElementById("pDesc").value = product.description || "";
+    document.getElementById("pSizes").value = product.sizes?.join(",") || "";
+    document.getElementById("pCare").value = product.care || "";
+    document.getElementById("pFabric").value = product.fabric || "";
+    document.getElementById("pColor").value = product.color || "";
+    document.getElementById("pStockStatus").value = product.stockStatus || "in_stock";
+    
+    // Show modal
+    document.getElementById("addProductModal").style.display = "flex";
+    
+    // Update save button
+    const saveBtn = document.getElementById("saveProduct");
+    saveBtn.innerText = "Update Product";
+    saveBtn.onclick = function(){
+      // Get form values
+      const name = document.getElementById("pName").value.trim();
+      const price = parseFloat(document.getElementById("pPrice").value);
+      const category = document.getElementById("pCategory").value;
+      const image = document.getElementById("pImage").value.trim();
+      const description = document.getElementById("pDesc").value.trim();
+      const sizes = document.getElementById("pSizes").value.trim();
+      const care = document.getElementById("pCare").value.trim();
+      const fabric = document.getElementById("pFabric").value.trim();
+      const color = document.getElementById("pColor").value.trim();
+      
+      // Validate form
+      if(!name || isNaN(price) || price <= 0){
+        alert("Please enter a valid product name and price");
+        return;
+      }
+      
+      // Update product
+      product.name = name;
+      product.price = price;
+      product.category = category;
+      product.image = image || "https://via.placeholder.com/300x400?text=Product+Image";
+      product.description = description;
+      product.sizes = sizes.split(",").map(s => s.trim());
+      product.care = care;
+      product.fabric = fabric;
+      product.color = color;
+      product.stockStatus = document.getElementById("pStockStatus").value;
+      product.updatedAt = new Date().toISOString();
+      
+      // Save products
+      writeProducts(products);
+      
+      // Close modal and refresh products table
+      document.getElementById("addProductModal").style.display = "none";
+      renderProducts();
+      
+      // Reset save button
+      saveBtn.innerText = "Save Product";
+      saveBtn.onclick = null;
+    };
+  }
+  
+
+  function groupMonthlyTotals(orders){
+    const map = new Map();
+    orders.forEach(o=>{
+      const d = new Date(o.date||o.createdAt||Date.now());
+      const key = d.toLocaleString('en-US',{month:'short'}) + " " + d.getFullYear();
+      const prev = map.get(key)||0;
+      map.set(key, prev + Number(o.total||0));
+    });
+    const arr = [...map.entries()].map(([label, total])=>{
+      const [mon, yr] = label.split(" ");
+      const dt = new Date(`${mon} 1, ${yr}`);
+      return {label, total, dt};
+    }).sort((a,b)=>a.dt-b.dt);
+    return { labels: arr.map(x=>x.label), values: arr.map(x=>x.total) };
+  }
+
+  function renderOrdersAndEarnings(){
+    const orders = readOrders();
+    els.kpiOrders.textContent = orders.length;
+    const earnings = orders.reduce((s,o)=>s+Number(o.total||0),0);
+    els.kpiEarnings.textContent = money(earnings);
+
+    // table
+    els.ordersTbody.innerHTML = "";
+    orders.slice().reverse().forEach(o=>{
+      const d = new Date(o.date||o.createdAt||Date.now());
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>#${o.id || ("ORD"+String(o._ts||Date.now()).slice(-5))}</td>
+        <td>${o.user || o.userEmail || "guest"}</td>
+        <td>${money(o.total)}</td>
+        <td>${o.status || "Paid"}</td>
+        <td>${d.toLocaleString()}</td>`;
+      els.ordersTbody.appendChild(tr);
+    });
+
+    // chart
+    const grp = groupMonthlyTotals(orders);
+    drawChart(grp.labels, grp.values);
+  }
+
+  function drawChart(labels, values){
+    const ctx = document.getElementById("earningsChart").getContext("2d");
+    if(chartRef){ chartRef.destroy(); }
+    chartRef = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Earnings (₹)',
+          data: values,
+          borderColor: '#f7931e',
+          backgroundColor: 'rgba(247,147,30,0.20)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#f7931e'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#fff' } } },
+        scales: {
+          x: { ticks: { color: '#fff' }, grid:{color:'#222'} },
+          y: { ticks: { color: '#fff' }, grid:{color:'#222'} }
+        }
+      }
+    });
+  }
+
+  // ---------- Auth ----------
+  function logoutAdmin(){
+    localStorage.removeItem("currentUser");
+    localStorage.setItem("isUserLoggedIn","false");
+    location.href = "index.html";
+  }
+
+  // ---------- Live updates ----------
+  window.addEventListener("storage", (e)=>{
+    if(e.key===LS_ORDERS_KEY || e.key===LS_PRODUCTS_KEY || e.key==="users"){
+      renderProducts();
+      renderOrdersAndEarnings();
+      renderUsers();   // ✅ live update for users
+    }
+  });
+
+  // ---------- Boot ----------
+  (function init(){
+    readProducts(); 
+    readOrders();
+    renderProducts();
+    renderOrdersAndEarnings();
+    renderUsers();   // ✅ initial render
+  })();
+</script>
+
+</body>
+</html>

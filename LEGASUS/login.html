@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Product - LEGASUS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="product.css">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .verify-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .verify-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .verify-header h2 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .verify-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .verify-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        
+        .verify-btn {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .verify-btn:hover {
+            background-color: #333;
+        }
+        
+        .order-id {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #000;
+            font-family: monospace;
+            font-size: 18px;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-top: 5px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .otp-container {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .resend-otp {
+            text-align: right;
+            margin-top: 10px;
+        }
+        
+        .resend-otp a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <a href="index.html" class="brand-link">LEGASUS <span class="thin"></span></a>
+            </div>
+            <nav class="top-links">
+                <a href="index.html" class="nav-item">HOME</a>
+                <a href="index.html#about" class="nav-item">ABOUT</a>
+                <a href="#" class="nav-item highlight">NEW LATEST COLLECTION</a>
+                <a href="#" class="nav-item">OUR FASHION WORLD</a>
+            </nav>
+            <div class="icons">
+                <button class="icon-btn" id="cartBtn"><i class="fa-solid fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></button>
+                <button class="icon-btn" id="loginBtn"><i class="fa-regular fa-circle-user"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="verify-container">
+            <div class="verify-header">
+                <h2>Verify Your Product</h2>
+                <p>Please login to verify the authenticity of your product</p>
+            </div>
+            
+            <div class="order-id" id="orderIdDisplay"></div>
+            
+            <form id="loginForm" class="verify-form">
+                <div class="form-group">
+                    <label for="email">Email or Phone Number</label>
+                    <input type="text" id="email" name="email" required placeholder="Enter your email or phone number">
+                    <div class="error-message" id="emailError">Please enter a valid email or phone number</div>
+                </div>
+                
+                <div class="otp-container" id="otpContainer">
+                    <div class="form-group">
+                        <label for="otp">OTP</label>
+                        <input type="text" id="otp" name="otp" placeholder="Enter OTP sent to your email/phone">
+                        <div class="error-message" id="otpError">Please enter a valid OTP</div>
+                    </div>
+                    <div class="resend-otp">
+                        <a href="#" id="resendOtp">Resend OTP</a>
+                    </div>
+                </div>
+                
+                <button type="submit" class="verify-btn" id="verifyBtn">Send OTP</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LEGASUS</h3>
+                    <p>Premium clothing for the modern individual.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#allProductsSection">Products</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: info@legasus.com</p>
+                    <p>Phone: +91 98765 43210</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 LEGASUS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="lg.js"></script>
+</body>
+</html>

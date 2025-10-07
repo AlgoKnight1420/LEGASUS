@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEGASUS-FASHION && STYLE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Orange Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+               <div class="custom-marquee"> <span>Free Shipping on Orders Over ₹100</span></div>
+            </div>
+        </div>
+    </div>  
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo and Navigation (Left Side) -->
+                <div class="left-section">
+                    <div class="logo">
+                        <h1><span class="logo-red">LEG</span>ASUS</h1>
+                    </div>
+
+                    <!-- Desktop Navigation -->
+                    <nav class="nav-desktop">
+                        <button class="nav-btn active" data-category="all">Home</button>
+                        <a href="#about" class="nav-link">About</a>
+                        
+                        <!-- Category Dropdown -->
+                        <div class="dropdown">
+                            <button class="nav-btn dropdown-toggle">
+                                Categories <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <button class="dropdown-btn" data-category="men">Men</button>
+                                <button class="dropdown-btn" data-category="women">Women</button>
+                                <button class="dropdown-btn" data-category="summer">Summer Wear</button>
+                                <button class="dropdown-btn" data-category="winter">Winter Wear</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- User Actions (Right Side) -->
+                <div class="user-actions">
+                    <button class="action-btn mobile-search-btn" id="mobileSearchToggleBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <!-- <button class="action-btn" id="loginBtn">
+                        <i class="fas fa-user"></i>
+                        <span class="desktop-only">Login</span>
+                    </button> -->
+                    <button id="loginBtn" class="nav-btn" onclick="openAuthModal('login')">
+  <i class="fas fa-user"></i>
+  <span class="desktop-only">Login</span>
+</button>
+
+                    <button class="action-btn" id="wishlistBtn">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge" id="wishlistCount">0</span>
+                    </button>
+                    <button class="action-btn" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge" id="cartCount">0</span>
+                    </button>
+                    <!-- Admin Button moved to right side -->
+                    <!-- <button class="action-btn admin-btn" id="adminLoginBtn">
+                        <i class="fas fa-user-shield"></i>
+                    </button> -->
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobileMenu">
+                <button class="mobile-nav-btn active" data-category="all">Home</button>
+                <a href="#about" class="mobile-nav-link">About</a>
+                <div class="mobile-categories">
+                    <p class="mobile-category-title">Categories</p>
+                    <button class="mobile-nav-btn" data-category="men">Men</button>
+                    <button class="mobile-nav-btn" data-category="women">Women</button>
+                    <button class="mobile-nav-btn" data-category="summer">Summer Wear</button>
+                    <button class="mobile-nav-btn" data-category="winter">Winter Wear</button>
+                </div>
+                <button class="mobile-nav-btn" id="mobileLoginBtn">
+                    <i class="fas fa-user"></i> Login / Sign Up
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search products..." autofocus>
+                    <button class="search-btn" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <button class="search-modal-close" id="searchModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Background Video -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://raw.githubusercontent.com/akhil1206-star/legasus-video/main/car.mp4" type="video/mp4">
+            <!-- Fallback for browsers that don't support video -->
+        </video>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="hero-red">LEG</span>ASUS
+            </h1>
+            <p class="hero-subtitle">
+                Unleash Your Style. Ignite Your Performance.
+            </p>
+            <p class="hero-description">
+                Premium automotive-inspired fashion for those who live life in the fast lane
+            </p>
+            
+            <!-- <div class="hero-buttons">
+                <button class="btn btn-primary">Shop Now</button>
+                <button class="btn btn-secondary">Learn More</button>
+            </div> -->
+        </div>
+
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Latest Collection Section -->
+    <section class="latest-collection">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest Collection</h2>
+                <p>This Week's Featured Products - Updated Weekly</p>
+                <div class="week-indicator">
+                    <span class="week-badge">Week <span id="currentWeek">1</span></span>
+                </div>
+            </div>
+
+            <div class="latest-products-grid" id="latestProductsGrid">
+                <!-- Latest products will be loaded here by JavaScript -->
+            </div>
+
+            <div class="section-footer">
+                <button class="btn btn-outline" onclick="showAllLatestProducts()">
+                    <i class="fas fa-arrow-right"></i>
+                    Discover More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Video Section -->
+    <section class="demo-video-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Experience <span class="text-red">LEGASUS</span></h2>
+                <p>See our premium automotive fashion in action</p>
+            </div>
+
+            <div class="demo-video-container">
+                <video class="demo-video" controls poster="https://m.media-amazon.com/images/I/51r1k54CH6L._SX569_.jpg" playsinline>
+                    <source src="https://raw.githubusercontent.com/akhil1206-star/legasus-video/main/car.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="video-overlay">
+                    <button class="play-btn" onclick="playDemoVideo()">
+                        <i class="fas fa-play"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Sellers Section -->
+    <section class="best-sellers">
+        <div class="container">
+            <div class="section-header">
+                <h2>Best Sellers</h2>
+                <p>Our top-performing products loved by customers</p>
+                <div class="sales-indicator">
+                    <i class="fas fa-fire"></i>
+                    <span>High Demand Products</span>
+                </div>
+            </div>
+
+            <div class="best-sellers-grid" id="bestSellersGrid">
+                <!-- Best sellers will be loaded here by JavaScript -->
+            </div>
+
+            <div class="section-footer">
+                <button class="btn btn-outline" onclick="showAllProducts()">
+                    <i class="fas fa-arrow-right"></i>
+                    Discover More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Products Section (Hidden by default) -->
+    <section class="products-section" id="allProductsSection" style="display: none;">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="categoryTitle">All Products</h2>
+                <p>Discover our premium collection of automotive-inspired fashion</p>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>About <span class="text-red">LEGASUS</span></h2>
+                <p class="about-intro">
+                    Born from the fusion of automotive passion and street fashion, LEGASUS represents 
+                    the spirit of those who refuse to blend in. We create premium apparel for the bold, 
+                    the fast, and the fearless.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>High Performance</h3>
+                    <p>Just like the machines that inspire us, our clothing is built for performance, 
+                    comfort, and durability that matches your lifestyle.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Premium Quality</h3>
+                    <p>We use only the finest materials and construction techniques to ensure 
+                    every piece meets our exacting standards for quality and longevity.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Exclusive Design</h3>
+                    <p>Our designs are exclusively crafted for those who appreciate the intersection 
+                    of automotive culture and contemporary fashion.</p>
+                </div>
+            </div>
+ <div class="story-section">
+                <div class="story-content">
+                    <!-- <div class="story-text">
+                        <h3>Our Story</h3>
+                        <p>
+                            Legasus isn't just a brand — it's a movement. Created for those who dare to dream differently, 
+                            Legasus combines bold design with premium quality. Every product is crafted with attention to detail, 
+                            built to last, and designed to stand out.
+                        </p>
+                        <p>
+                            More than just clothing, it's a symbol of ambition and individuality. No shortcuts, no compromises — 
+                            only top-tier craftsmanship and authentic style. Whether you're in the streets or on the rise, 
+                            Legasus keeps you sharp, confident, and ahead of the curve.
+                        </p>
+                    </div> -->
+                    <div class="story-visual">
+                        <div class="brand-showcase">
+                            <h4>LEGASUS</h4>
+                            <p>Premium Automotive Fashion</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LEGASUS</h3>
+                    <p>Premium automotive-inspired fashion for those who live life in the fast lane.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="#" onclick="changeCategory('men')">Men's Collection</a></li>
+                        <li><a href="#" onclick="changeCategory('women')">Women's Collection</a></li>
+                        <li><a href="#" onclick="changeCategory('summer')">Summer Wear</a></li>
+                        <li><a href="#" onclick="changeCategory('winter')">Winter Wear</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="#about">Our Story</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 LEGASUS. All rights reserved.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="authTitle">Login</h2>
+                <button class="modal-close" id="authModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="auth-form" id="authForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" id="authSubmitBtn">Login</button>
+            </form>
+            <div class="auth-switch">
+                <p id="authSwitchText">Don't have an account?</p>
+                <button class="auth-switch-btn" id="authSwitchBtn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Shopping Cart</h2>
+                <button class="modal-close" id="cartModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="cart-content">
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items will be populated here -->
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <span class="total-label">Total: </span>
+                        <span class="total-amount" id="cartTotal">₹0.00</span>
+                    </div>
+                    <div class="cart-actions">
+                        <button class="btn btn-outline" id="continueShopping">Continue Shopping</button>
+                        <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+                    </div>
+                </div>
+                <div class="empty-cart" id="emptyCart" style="display: none;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Add some products to get started</p>
+                    <button class="btn btn-primary" id="continueShoppingFooter">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div class="modal" id="wishlistModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Wishlist</h2>
+                <button class="modal-close" id="wishlistModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="wishlist-content">
+                <div class="wishlist-items" id="wishlistItems">
+                    <!-- Wishlist items will be populated here -->
+                </div>
+                <div class="empty-wishlist" id="emptyWishlist" style="display: none;">
+                    <i class="fas fa-heart"></i>
+                    <h3>Your wishlist is empty</h3>
+                    <p>Save your favorite products here</p>
+                    <button class="btn btn-primary" id="continueShoppingWishlist">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="productModalTitle">Product Details</h2>
+                <button class="modal-close" id="productModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="product-detail" id="productDetail">
+                <!-- Product details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Checkout</h2>
+                <button class="modal-close" id="checkoutModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="checkout-content">
+                <form class="checkout-form" id="checkoutForm">
+                    <div class="checkout-section">
+                        <h3>Shipping Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code</label>
+                                <input type="text" id="postalCode" name="postalCode" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-section">
+                        <h3>Payment Method</h3>
+                        <div class="payment-methods">
+                            <label class="payment-method">
+                                <input type="radio" name="payment" value="card" checked>
+                                <span>Credit/Debit Card</span>
+                            </label>
+                            <label class="payment-method">
+                                <input type="radio" name="payment" value="cod">
+                                <span>Cash on Delivery</span>
+                            </label>
+                        </div>
+                        <div class="card-details" id="cardDetails">
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiryDate">Expiry Date</label>
+                                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-summary">
+                        <h3>Order Summary</h3>
+                        <div class="summary-items" id="checkoutSummaryItems">
+                            <!-- Order items will be populated here -->
+                        </div>
+                        <div class="summary-total">
+                            <span class="total-label">Total: </span>
+                            <span class="total-amount" id="checkoutTotal">₹0.00</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full" id="placeOrderBtn">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div class="modal" id="orderSuccessModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Order Placed Successfully!</h2>
+                <button class="modal-close" id="orderSuccessClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="order-success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Thank you for your order!</h3>
+                <p>Your order has been placed successfully. You will receive an email confirmation shortly.</p>
+                <div class="order-details">
+                    <p><strong>Order ID:</strong> <span id="orderNumber">#12345</span></p>
+                    <p><strong>Total:</strong> <span id="orderTotal">₹0.00</span></p>
+                </div>
+                <button class="btn btn-primary" id="continueShoppingSuccess">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Notification -->
+    <div class="notification" id="cartNotification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="notificationMessage">Product added to cart!</span>
+            <button class="notification-close" id="notificationClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Order Panel Modal -->
+    <div class="modal" id="orderPanelModal">
+        <div class="modal-content order-panel-content">
+            <div class="modal-header">
+                <h2>Custom Order Panel</h2>
+                <button class="modal-close" id="orderPanelClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="order-panel-body">
+                <form id="orderPanelForm" class="order-panel-form">
+                    <!-- Photo Upload Section -->
+                    <div class="photo-upload-section">
+                        <h3>Upload Product Photo</h3>
+                        <div class="photo-upload-area" id="photoUploadArea">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload photo or drag & drop</p>
+                                <span>Supports: JPG, PNG, GIF (Max 5MB)</span>
+                            </div>
+                            <img id="uploadedPhoto" class="uploaded-photo" style="display: none;">
+                            <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                        </div>
+                        <div class="photo-actions">
+                            <button type="button" class="btn btn-secondary" id="changePhotoBtn" style="display: none;">
+                                <i class="fas fa-edit"></i> Change Photo
+                            </button>
+                            <button type="button" class="btn btn-danger" id="removePhotoBtn" style="display: none;">
+                                <i class="fas fa-trash"></i> Remove Photo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product Details Form -->
+                    <div class="product-details-section">
+                        <h3>Product Details</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productName">Product Name *</label>
+                                <input type="text" id="productName" name="productName" required placeholder="e.g., Cotton T-Shirt">
+                            </div>
+                            <div class="form-group">
+                                <label for="productCategory">Category *</label>
+                                <select id="productCategory" name="productCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="men">Men</option>
+                                    <option value="women">Women</option>
+                                    <option value="kids">Kids</option>
+                                    <option value="accessories">Accessories</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fabricType">Fabric Type *</label>
+                                <select id="fabricType" name="fabricType" required>
+                                    <option value="">Select Fabric</option>
+                                    <option value="cotton">Cotton</option>
+                                    <option value="polyester">Polyester</option>
+                                    <option value="silk">Silk</option>
+                                    <option value="wool">Wool</option>
+                                    <option value="linen">Linen</option>
+                                    <option value="denim">Denim</option>
+                                    <option value="synthetic">Synthetic</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fabricQuality">Fabric Quality</label>
+                                <select id="fabricQuality" name="fabricQuality">
+                                    <option value="">Select Quality</option>
+                                    <option value="premium">Premium</option>
+                                    <option value="standard">Standard</option>
+                                    <option value="economy">Economy</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="quantity">Quantity *</label>
+                                <input type="number" id="quantity" name="quantity" min="1" max="100" required placeholder="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="size">Size *</label>
+                                <select id="size" name="size" required>
+                                    <option value="">Select Size</option>
+                                    <option value="xs">XS</option>
+                                    <option value="s">S</option>
+                                    <option value="m">M</option>
+                                    <option value="l">L</option>
+                                    <option value="xl">XL</option>
+                                    <option value="xxl">XXL</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="color">Color *</label>
+                                <input type="text" id="color" name="color" required placeholder="e.g., Navy Blue">
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Expected Price (₹)</label>
+                                <input type="number" id="price" name="price" min="0" step="0.01" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="specialRequirements">Special Requirements</label>
+                            <textarea id="specialRequirements" name="specialRequirements" rows="3" placeholder="Any specific design, stitching, or customization requirements..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deliveryDate">Preferred Delivery Date</label>
+                            <input type="date" id="deliveryDate" name="deliveryDate" min="">
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="contact-section">
+                        <h3>Contact Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customerName">Full Name *</label>
+                                <input type="text" id="customerName" name="customerName" required placeholder="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerPhone">Phone Number *</label>
+                                <input type="tel" id="customerPhone" name="customerPhone" required placeholder="+91 98765 43210">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerEmail">Email Address</label>
+                            <input type="email" id="customerEmail" name="customerEmail" placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="customerAddress">Delivery Address *</label>
+                            <textarea id="customerAddress" name="customerAddress" rows="3" required placeholder="Complete delivery address..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="saveDraftBtn">
+                            <i class="fas fa-save"></i> Save Draft
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Panel Success Modal -->
+    <div class="modal" id="orderPanelSuccessModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Order Submitted Successfully!</h2>
+                <button class="modal-close" id="orderPanelSuccessClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="order-success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Your custom order has been submitted!</h3>
+                <p>We'll review your requirements and get back to you within 24 hours with a quote and timeline.</p>
+                <div class="order-details">
+                    <p><strong>Order ID:</strong> <span id="customOrderNumber">#CUST12345</span></p>
+                    <p><strong>Product:</strong> <span id="customOrderProduct">Custom Product</span></p>
+                </div>
+                <button class="btn btn-primary" id="continueShoppingCustom">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Login</h2>
+                <button class="modal-close" id="adminLoginModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="admin-login-form" id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" name="adminUsername" required placeholder="Enter admin username">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="adminPassword" name="adminPassword" required placeholder="Enter admin password">
+                        <button type="button" class="password-toggle" id="adminPasswordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login to Admin Panel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div class="modal" id="adminDashboardModal">
+        <div class="modal-content admin-dashboard-content">
+            <div class="modal-header">
+                <h2>Admin Dashboard</h2>
+                <div class="admin-header-actions">
+                    <span class="admin-welcome">Welcome, Admin!</span>
+                    <button class="btn btn-danger" id="adminLogoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+                <button class="modal-close" id="adminDashboardClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="admin-dashboard-body">
+                <!-- Admin Navigation Tabs -->
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="overview">
+                        <i class="fas fa-chart-line"></i> Overview
+                    </button>
+                    <div class="admin-tab-group">
+                        <button class="admin-tab" data-tab="orders">
+                            <i class="fas fa-shopping-bag"></i> Orders
+                            <i class="fas fa-chevron-down submenu-toggle"></i>
+                        </button>
+                        <div class="admin-submenu">
+                            <button class="admin-subtab" data-tab="custom-orders">
+                                <i class="fas fa-plus-circle"></i> Custom Orders
+                            </button>
+                            <button class="admin-subtab" data-tab="returns">
+                                <i class="fas fa-undo"></i> Returns
+                            </button>
+                            <button class="admin-subtab" data-tab="exchanges">
+                                <i class="fas fa-exchange-alt"></i> Exchanges
+                            </button>
+                        </div>
+                    </div>
+                    <button class="admin-tab" data-tab="earnings">
+                        <i class="fas fa-rupee-sign"></i> Earnings
+                    </button>
+                    <button class="admin-tab" data-tab="products">
+                        <i class="fas fa-box"></i> Products
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="admin-tab-content">
+                    <!-- Overview Tab -->
+                    <div class="admin-tab-pane active" id="overview-tab">
+                        <div class="dashboard-stats">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="totalOrders">0</h3>
+                                    <p>Total Orders</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="totalEarnings">₹0</h3>
+                                    <p>Total Earnings</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="totalCustomers">0</h3>
+                                    <p>Total Customers</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="totalProducts">0</h3>
+                                    <p>Total Products</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recent-activity">
+                            <h3>Recent Activity</h3>
+                            <div class="activity-list" id="recentActivityList">
+                                <!-- Recent activity will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders Tab -->
+                    <div class="admin-tab-pane" id="orders-tab">
+                        <div class="tab-header">
+                            <h3>All Orders</h3>
+                            <div class="tab-actions">
+                                <button class="btn btn-primary" id="addNewOrderBtn">
+                                    <i class="fas fa-plus"></i> Add New Order
+                                </button>
+                                <input type="text" id="orderSearch" placeholder="Search orders..." class="search-input">
+                                <select id="orderStatusFilter" class="filter-select">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="orders-table-container">
+                            <table class="admin-table" id="ordersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Products</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <!-- Orders will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Custom Orders Tab -->
+                    <div class="admin-tab-pane" id="custom-orders-tab">
+                        <div class="tab-header">
+                            <h3>Custom Orders</h3>
+                            <div class="tab-actions">
+                                <input type="text" id="customOrderSearch" placeholder="Search custom orders..." class="search-input">
+                                <select id="customOrderStatusFilter" class="filter-select">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="reviewing">Reviewing</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="custom-orders-grid" id="customOrdersGrid">
+                            <!-- Custom orders will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Returns Tab -->
+                    <div class="admin-tab-pane" id="returns-tab">
+                        <div class="tab-header">
+                            <h3>Returns & Refunds</h3>
+                            <div class="tab-actions">
+                                <button class="btn btn-primary" id="addNewReturnBtn">
+                                    <i class="fas fa-plus"></i> Add New Return
+                                </button>
+                                <input type="text" id="returnSearch" placeholder="Search returns..." class="search-input">
+                                <select id="returnStatusFilter" class="filter-select">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="processed">Processed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="returns-table-container">
+                            <table class="admin-table" id="returnsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Return ID</th>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="returnsTableBody">
+                                    <!-- Returns will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Exchanges Tab -->
+                    <div class="admin-tab-pane" id="exchanges-tab">
+                        <div class="tab-header">
+                            <h3>Product Exchanges</h3>
+                            <div class="tab-actions">
+                                <button class="btn btn-primary" id="addNewExchangeBtn">
+                                    <i class="fas fa-plus"></i> Add New Exchange
+                                </button>
+                                <input type="text" id="exchangeSearch" placeholder="Search exchanges..." class="search-input">
+                                <select id="exchangeStatusFilter" class="filter-select">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="exchanges-table-container">
+                            <table class="admin-table" id="exchangesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Exchange ID</th>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Original Product</th>
+                                        <th>New Product</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="exchangesTableBody">
+                                    <!-- Exchanges will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Earnings Tab -->
+                    <div class="admin-tab-pane" id="earnings-tab">
+                        <div class="tab-header">
+                            <h3>Earnings & Analytics</h3>
+                            <div class="tab-actions">
+                                <select id="earningsPeriod" class="filter-select">
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month" selected>This Month</option>
+                                    <option value="year">This Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="earnings-overview">
+                            <div class="earnings-card">
+                                <h4>Total Revenue</h4>
+                                <div class="earnings-amount" id="totalRevenue">₹0</div>
+                                <div class="earnings-change positive">+12.5% from last month</div>
+                            </div>
+                            <div class="earnings-card">
+                                <h4>Net Profit</h4>
+                                <div class="earnings-amount" id="netProfit">₹0</div>
+                                <div class="earnings-change positive">+8.3% from last month</div>
+                            </div>
+                            <div class="earnings-card">
+                                <h4>Orders</h4>
+                                <div class="earnings-amount" id="periodOrders">0</div>
+                                <div class="earnings-change positive">+15.2% from last month</div>
+                            </div>
+                            <div class="earnings-card">
+                                <h4>Average Order Value</h4>
+                                <div class="earnings-amount" id="avgOrderValue">₹0</div>
+                                <div class="earnings-change negative">-2.1% from last month</div>
+                            </div>
+                        </div>
+                        <div class="earnings-chart">
+                            <h4>Revenue Trend</h4>
+                            <div class="chart-container" id="earningsChart">
+                                <!-- Chart will be rendered here -->
+                                <div class="chart-placeholder">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>Revenue chart will be displayed here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Tab -->
+                    <div class="admin-tab-pane" id="products-tab">
+                        <div class="tab-header">
+                            <h3>Product Management</h3>
+                            <div class="tab-actions">
+                                <button class="btn btn-primary" id="addNewProductBtn">
+                                    <i class="fas fa-plus"></i> Add New Product
+                                </button>
+                                <input type="text" id="productSearch" placeholder="Search products..." class="search-input">
+                                <select id="productCategoryFilter" class="filter-select">
+                                    <option value="">All Categories</option>
+                                    <option value="men">Men</option>
+                                    <option value="women">Women</option>
+                                    <option value="summer">Summer Wear</option>
+                                    <option value="winter">Winter Wear</option>
+                                    <option value="accessories">Accessories</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="products-grid" id="adminProductsGrid">
+                            <!-- Products will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Order Modal -->
+    <div class="modal" id="addOrderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Order</h2>
+                <button class="modal-close" id="addOrderModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="add-order-form" id="addOrderForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newOrderCustomer">Customer Name *</label>
+                        <input type="text" id="newOrderCustomer" name="customer" required placeholder="Enter customer name">
+                    </div>
+                    <div class="form-group">
+                        <label for="newOrderPhone">Phone Number</label>
+                        <input type="tel" id="newOrderPhone" name="phone" placeholder="Enter phone number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newOrderProducts">Products *</label>
+                    <textarea id="newOrderProducts" name="products" required rows="2" placeholder="Enter product details"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newOrderTotal">Total Amount (₹) *</label>
+                        <input type="number" id="newOrderTotal" name="total" required min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="newOrderStatus">Status *</label>
+                        <select id="newOrderStatus" name="status" required>
+                            <option value="">Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newOrderDate">Order Date *</label>
+                    <input type="date" id="newOrderDate" name="date" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAddOrder">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add New Return Modal -->
+    <div class="modal" id="addReturnModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Return</h2>
+                <button class="modal-close" id="addReturnModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="add-return-form" id="addReturnForm">
+                <div class="form-group">
+                    <label for="newReturnOrderId">Order ID *</label>
+                    <input type="text" id="newReturnOrderId" name="orderId" required placeholder="Enter order ID">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newReturnCustomer">Customer Name *</label>
+                        <input type="text" id="newReturnCustomer" name="customer" required placeholder="Enter customer name">
+                    </div>
+                    <div class="form-group">
+                        <label for="newReturnProduct">Product *</label>
+                        <input type="text" id="newReturnProduct" name="product" required placeholder="Enter product name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newReturnReason">Return Reason *</label>
+                    <textarea id="newReturnReason" name="reason" required rows="2" placeholder="Enter return reason"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="newReturnStatus">Status *</label>
+                    <select id="newReturnStatus" name="status" required>
+                        <option value="">Select Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="processed">Processed</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAddReturn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Return</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add New Exchange Modal -->
+    <div class="modal" id="addExchangeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Exchange</h2>
+                <button class="modal-close" id="addExchangeModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="add-exchange-form" id="addExchangeForm">
+                <div class="form-group">
+                    <label for="newExchangeOrderId">Order ID *</label>
+                    <input type="text" id="newExchangeOrderId" name="orderId" required placeholder="Enter order ID">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newExchangeCustomer">Customer Name *</label>
+                        <input type="text" id="newExchangeCustomer" name="customer" required placeholder="Enter customer name">
+                    </div>
+                    <div class="form-group">
+                        <label for="newExchangeStatus">Status *</label>
+                        <select id="newExchangeStatus" name="status" required>
+                            <option value="">Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newExchangeOriginal">Original Product *</label>
+                    <input type="text" id="newExchangeOriginal" name="originalProduct" required placeholder="Enter original product details">
+                </div>
+                <div class="form-group">
+                    <label for="newExchangeNew">New Product *</label>
+                    <input type="text" id="newExchangeNew" name="newProduct" required placeholder="Enter new product details">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAddExchange">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Exchange</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add New Product Modal -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content product-upload-content">
+            <div class="modal-header">
+                <h2>Add New Product</h2>
+                <button class="modal-close" id="addProductModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="add-product-form" id="addProductForm">
+                <!-- Product Images -->
+                <div class="product-images-section">
+                    <h3>Product Images</h3>
+                    <div class="image-upload-grid">
+                        <div class="image-upload-item main-image">
+                            <label>Main Image *</label>
+                            <div class="image-upload-area" id="mainImageArea">
+                                <div class="upload-placeholder">
+                                    <i class="fas fa-camera"></i>
+                                    <p>Click to upload</p>
+                                </div>
+                                <img id="mainImagePreview" class="uploaded-image" style="display: none;">
+                                <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="image-upload-item">
+                            <label>Image 2</label>
+                            <div class="image-upload-area" id="image1Area">
+                                <div class="upload-placeholder">
+                                    <i class="fas fa-plus"></i>
+                                    <p>Add image</p>
+                                </div>
+                                <img id="image1Preview" class="uploaded-image" style="display: none;">
+                                <input type="file" id="image1" name="image1" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="image-upload-item">
+                            <label>Image 3</label>
+                            <div class="image-upload-area" id="image2Area">
+                                <div class="upload-placeholder">
+                                    <i class="fas fa-plus"></i>
+                                    <p>Add image</p>
+                                </div>
+                                <img id="image2Preview" class="uploaded-image" style="display: none;">
+                                <input type="file" id="image2" name="image2" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="image-upload-item">
+                            <label>Image 4</label>
+                            <div class="image-upload-area" id="image3Area">
+                                <div class="upload-placeholder">
+                                    <i class="fas fa-plus"></i>
+                                    <p>Add image</p>
+                                </div>
+                                <img id="image3Preview" class="uploaded-image" style="display: none;">
+                                <input type="file" id="image3" name="image3" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="product-details-section">
+                    <h3>Product Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" name="productName" required placeholder="Enter product name">
+                        </div>
+                        <div class="form-group">
+                            <label for="productCategory">Category *</label>
+                            <select id="productCategory" name="productCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="men">Men</option>
+                                <option value="women">Women</option>
+                                <option value="summer">Summer Wear</option>
+                                <option value="winter">Winter Wear</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productPrice">Price (₹) *</label>
+                            <input type="number" id="productPrice" name="productPrice" required min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="productStock">Stock Quantity</label>
+                            <input type="number" id="productStock" name="productStock" min="0" placeholder="Available quantity">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">Product Description *</label>
+                        <textarea id="productDescription" name="productDescription" required rows="4" placeholder="Enter detailed product description..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productSizes">Available Sizes</label>
+                        <div class="size-checkboxes">
+                            <label><input type="checkbox" name="sizes" value="xs"> XS</label>
+                            <label><input type="checkbox" name="sizes" value="s"> S</label>
+                            <label><input type="checkbox" name="sizes" value="m"> M</label>
+                            <label><input type="checkbox" name="sizes" value="l"> L</label>
+                            <label><input type="checkbox" name="sizes" value="xl"> XL</label>
+                            <label><input type="checkbox" name="sizes" value="xxl"> XXL</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAddProduct">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+     <script src="product.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Profile - LEGASUS</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="cstomer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Orange Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="custom-marquee">
+                    <span>Welcome to Your Profile Dashboard</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="left-section">
+                    <div class="logo">
+                        <h1><span class="logo-red">LEG</span>ASUS</h1>
+                    </div>
+                    <nav class="nav-desktop">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="index.html#allProductsSection" class="nav-link">Products</a>
+                        <a href="#" class="nav-link active">Profile</a>
+                    </nav>
+                </div>
+                <div class="user-actions">
+                    <button class="action-btn" onclick="window.location.href='index.html'" data-testid="button-home">
+                        <i class="fas fa-home"></i>
+                        <span class="desktop-only">Home</span>
+                    </button>
+                    <button class="action-btn btn-danger" onclick="logoutUser()" data-testid="button-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="desktop-only">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h2 id="customerName" data-testid="text-customer-name">Welcome, Customer!</h2>
+            <p id="customerEmail" data-testid="text-customer-email">customer@example.com</p>
+        </div>
+
+        <!-- Profile Tabs -->
+        <div class="profile-tabs">
+            <button class="profile-tab active" onclick="showTab('profile')" data-testid="tab-profile">
+                <i class="fas fa-user"></i> Profile
+            </button>
+            <button class="profile-tab" onclick="showTab('orders')" data-testid="tab-orders">
+                <i class="fas fa-shopping-bag"></i> My Orders
+            </button>
+            <button class="profile-tab" onclick="showTab('returns')" data-testid="tab-returns">
+                <i class="fas fa-undo"></i> Returns
+            </button>
+            <button class="profile-tab" onclick="showTab('exchanges')" data-testid="tab-exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </button>
+        </div>
+
+        <!-- Tab Contents -->
+        <div id="profile-tab" class="tab-content active">
+            <h3>Personal Information</h3>
+            <form id="profileForm" class="profile-form" data-testid="form-profile">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-input" id="firstName" value="John" data-testid="input-first-name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-input" id="lastName" value="Doe" data-testid="input-last-name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="email" value="john.doe@example.com" readonly data-testid="input-email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-input" id="phone" value="+91 98765 43210" data-testid="input-phone">
+                </div>
+                <div class="form-group full-width">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-input" id="address" rows="3" data-testid="input-address">123 Main Street, City, State 12345</textarea>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit" class="btn-save" data-testid="button-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="orders-tab" class="tab-content">
+            <div class="section-header">
+                <h3>My Orders</h3>
+                <p>Track your orders and manage returns</p>
+            </div>
+            <div id="ordersList" class="orders-grid" data-testid="orders-list">
+                <!-- Orders will be loaded here -->
+            </div>
+        </div>
+
+        <div id="returns-tab" class="tab-content">
+            <div class="section-header">
+                <h3>My Returns</h3>
+                <p>View and track your return requests</p>
+            </div>
+            <div id="returnsList" class="returns-grid" data-testid="returns-list">
+                <!-- Returns will be loaded here -->
+            </div>
+        </div>
+
+        <div id="exchanges-tab" class="tab-content">
+            <div class="section-header">
+                <h3>My Exchanges</h3>
+                <p>View and track your exchange requests</p>
+            </div>
+            <div id="exchangesList" class="exchanges-grid" data-testid="exchanges-list">
+                <!-- Exchanges will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for tracking orders -->
+    <div class="modal" id="trackingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="trackingTitle">Order Tracking</h3>
+                <button class="modal-close" onclick="this.closest('.modal').classList.remove('active')" data-testid="button-close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="trackingBody">
+                <!-- Tracking info will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for returns/exchanges -->
+    <div class="modal" id="returnExchangeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="returnExchangeTitle">Request Return</h3>
+                <button class="modal-close" onclick="this.closest('.modal').classList.remove('active')" data-testid="button-close-return-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="returnExchangeForm" data-testid="form-return-exchange">
+                    <div class="form-group">
+                        <label class="form-label">Reason</label>
+                        <select class="form-input" id="reason" required data-testid="select-reason">
+                            <option value="">Select a reason</option>
+                            <option value="wrong_size">Wrong Size</option>
+                            <option value="defective">Defective Product</option>
+                            <option value="not_as_described">Not as Described</option>
+                            <option value="changed_mind">Changed Mind</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-input" id="description" rows="4" placeholder="Please provide more details..." required data-testid="textarea-description"></textarea>
+                    </div>
+                    <button type="submit" class="btn-save" data-testid="button-submit-request">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="customer.js"></script>
+</body>
+</html>
